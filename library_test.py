@@ -50,6 +50,18 @@ class TestCase(unittest.TestCase):
     def test_iso8601_ivalid_date_not_matched2(self):
         self.assert_extract("I was born on 2015-07-00.", library.dates_iso8601)
 
+    # Prove not to match date time with invalid hour (24)
+    def test_iso8601_date_time_invalid_hour(self):
+        self.assert_extract("I was born on 2018-06-22 24:22:19.123.", library.dates_iso8601)
+
+    # Prove not to match date time with invalid minute (60)
+    def test_iso8601_date_time_invalid_minute(self):
+        self.assert_extract("I was born on 2018-06-22 22:60:19.123.", library.dates_iso8601)
+
+    # Prove not to match date time with invalid second (60)
+    def test_iso8601_date_time_invalid_second(self):
+        self.assert_extract("I was born on 2018-06-22 22:22:60.123.", library.dates_iso8601)
+
     # Prove it work for date with time up to ms precision
     def test_iso8601_date_time_with_ms_precion(self):
         self.assert_extract("I was born on 2018-06-22 18:22:19.123.", library.dates_iso8601, '2018-06-22 18:22:19.123')
@@ -112,39 +124,39 @@ class TestCase(unittest.TestCase):
 
     # Prove it work for date with time up to ms precision with T separator and Z timezone
     def test_iso8601_date_time_T_separator_with_ms_precion_zulu(self):
-        self.assert_extract("I was born on 2018-06-22T18:22:19.123Z.", library.dates_iso8601, '2018-06-22 18:22:19.123Z')
+        self.assert_extract("I was born on 2018-06-22T18:22:19.123Z.", library.dates_iso8601, '2018-06-22T18:22:19.123Z')
 
     # Prove it work for date with time up to s precision with T separator and Z timezone
     def test_iso8601_date_time_T_separator_with_s_precision_zulu(self):
-        self.assert_extract("I was born on 2018-06-22T18:22:19Z.", library.dates_iso8601, '2018-06-22 18:22:19Z')
+        self.assert_extract("I was born on 2018-06-22T18:22:19Z.", library.dates_iso8601, '2018-06-22T18:22:19Z')
 
     # Prove it work for date with time up to minute precision with T separator and Z timezone
     def test_iso8601_date_time_T_separator_with_min_precision_zulu(self):
-        self.assert_extract("I was born on 2018-06-22T18:22Z.", library.dates_iso8601, '2018-06-22 18:22Z')
+        self.assert_extract("I was born on 2018-06-22T18:22Z.", library.dates_iso8601, '2018-06-22T18:22Z')
 
     # Prove it work for date with time up to ms precision with T separator and 3 letter timezone
     def test_iso8601_date_time_T_separator_with_ms_precion_letter_timezone(self):
-        self.assert_extract("I was born on 2018-06-22T18:22:19.123MDT.", library.dates_iso8601, '2018-06-22 18:22:19.123MDT')
+        self.assert_extract("I was born on 2018-06-22T18:22:19.123MDT.", library.dates_iso8601, '2018-06-22T18:22:19.123MDT')
 
     # Prove it work for date with time up to s precision with T separator and 3 leter timezone
     def test_iso8601_date_time_T_separator_with_s_precision_letter_timezone(self):
-        self.assert_extract("I was born on 2018-06-22T18:22:19MDT.", library.dates_iso8601, '2018-06-22 18:22:19MDT')
+        self.assert_extract("I was born on 2018-06-22T18:22:19MDT.", library.dates_iso8601, '2018-06-22T18:22:19MDT')
 
     # Prove it work for date with time up to minute precision with T separator and 3 leter timezone
     def test_iso8601_date_time_T_separator_with_min_precision_letter_timezone(self):
-        self.assert_extract("I was born on 2018-06-22T18:22MDT.", library.dates_iso8601, '2018-06-22 18:22MDT')
+        self.assert_extract("I was born on 2018-06-22T18:22MDT.", library.dates_iso8601, '2018-06-22T18:22MDT')
 
     # Prove it work for date with time up to ms precision with T separator and offset
     def test_iso8601_date_time_T_separator_with_ms_precion_offset(self):
-        self.assert_extract("I was born on 2018-06-22T18:22:19.123-0800.", library.dates_iso8601, '2018-06-22 18:22:19.123-0800')
+        self.assert_extract("I was born on 2018-06-22T18:22:19.123-0800.", library.dates_iso8601, '2018-06-22T18:22:19.123-0800')
 
     # Prove it work for date with time up to s precision with T separator and offset
     def test_iso8601_date_time_T_separator_with_s_precision_offset(self):
-        self.assert_extract("I was born on 2018-06-22T18:22:19-0800.", library.dates_iso8601, '2018-06-22 18:22:19-0800')
+        self.assert_extract("I was born on 2018-06-22T18:22:19-0800.", library.dates_iso8601, '2018-06-22T18:22:19-0800')
 
     # Prove it work for date with time up to minute precision with T separator and offset
     def test_iso8601_date_time_T_separator_with_min_precision_offset(self):
-        self.assert_extract("I was born on 2018-06-22T18:22-0800.", library.dates_iso8601, '2018-06-22 18:22-0800')
+        self.assert_extract("I was born on 2018-06-22T18:22-0800.", library.dates_iso8601, '2018-06-22T18:22-0800')
 
     # Prove it work for multiple iso8601 dates in different formats
     def test_iso8601_date_multiple(self):
@@ -165,7 +177,7 @@ class TestCase(unittest.TestCase):
 
     # Prove it works for date with string month for multiple dates in different formats
     def test_date_with_string_month_multiple(self):
-        self.assert_extract('I was born on 25 Jan 2017 and my sister is born on 21 Feb 2013.',
+        self.assert_extract('I was born on 25 Jan, 2017 and my sister is born on 21 Feb 2013.',
                             library.dates_string_month,
                             '25 Jan, 2017',
                             "21 Feb 2013")
